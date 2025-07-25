@@ -107,7 +107,7 @@ public class RemoteModel implements Predictable {
     public void initModel(MLModel model, Map<String, Object> params, Encryptor encryptor) {
         SdkClient sdkClient = (SdkClient) params.get(SDK_CLIENT);
         sdkClient.isGlobalResource(MLIndex.MODEL.getIndexName(), model.getModelId()).thenAccept(isGlobalResource -> {
-            String decryptTenantId = isGlobalResource
+            String decryptTenantId = Boolean.TRUE.equals(isGlobalResource)
                 ? REMOTE_METADATA_GLOBAL_TENANT_ID.get((Settings) params.get(SETTINGS))
                 : model.getTenantId();
             Connector connector = model.getConnector().cloneConnector();

@@ -23,11 +23,13 @@ import static org.opensearch.ml.common.settings.MLCommonsSettings.ML_COMMONS_MUL
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_ENDPOINT;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID;
+import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_REGION;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_SERVICE_NAME;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_TYPE;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_ENDPOINT_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY;
+import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_TENANT_ID_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_TENANT_ID_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_REGION_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_SERVICE_NAME_KEY;
@@ -1241,6 +1243,7 @@ public class MachineLearningPlugin extends Plugin
                 MLCommonsSettings.ML_COMMONS_EXECUTE_TOOL_ENABLED,
                 MLCommonsSettings.ML_COMMONS_AGENTIC_SEARCH_ENABLED,
                 MLCommonsSettings.ML_COMMONS_AGENTIC_MEMORY_ENABLED,
+                MLCommonsSettings.ML_COMMONS_STATIC_METRIC_COLLECTION_ENABLED,
                 MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID
             );
         return settings;
