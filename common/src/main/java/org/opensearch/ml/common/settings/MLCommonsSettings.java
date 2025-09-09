@@ -6,6 +6,8 @@
 package org.opensearch.ml.common.settings;
 
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_ENDPOINT_KEY;
+import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY;
+import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_TENANT_ID_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_REGION_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_SERVICE_NAME_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_TYPE_KEY;
@@ -216,6 +218,12 @@ public final class MLCommonsSettings {
     public static final Setting<Boolean> ML_COMMONS_MEMORY_FEATURE_ENABLED = Setting
         .boolSetting("plugins.ml_commons.memory_feature_enabled", true, Setting.Property.NodeScope, Setting.Property.Dynamic);
 
+    public static final Setting<Boolean> ML_COMMONS_AGENTIC_SEARCH_ENABLED = Setting
+        .boolSetting("plugins.ml_commons.agentic_search_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
+    public static final String ML_COMMONS_AGENTIC_SEARCH_DISABLED_MESSAGE =
+        "The QueryPlanningTool tool for Agentic Search is not enabled. To enable, please update the setting "
+            + ML_COMMONS_AGENTIC_SEARCH_ENABLED.getKey();
+
     public static final Setting<Boolean> ML_COMMONS_MCP_CONNECTOR_ENABLED = Setting
         .boolSetting("plugins.ml_commons.mcp_connector_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
     public static final String ML_COMMONS_MCP_CONNECTOR_DISABLED_MESSAGE =
@@ -236,6 +244,12 @@ public final class MLCommonsSettings {
 
     public static final Setting<Boolean> ML_COMMONS_CONNECTOR_PRIVATE_IP_ENABLED = Setting
         .boolSetting("plugins.ml_commons.connector.private_ip_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
+
+    // Feature flag for execute tool API
+    public static final Setting<Boolean> ML_COMMONS_EXECUTE_TOOL_ENABLED = Setting
+        .boolSetting("plugins.ml_commons.execute_tools_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
+    public static final String ML_COMMONS_EXECUTE_TOOL_DISABLED_MESSAGE =
+        "The Execute Tool API is not enabled. To enable, please update the setting " + ML_COMMONS_EXECUTE_TOOL_ENABLED.getKey();
 
     public static final Setting<List<String>> ML_COMMONS_REMOTE_JOB_STATUS_FIELD = Setting
         .listSetting(
@@ -349,5 +363,21 @@ public final class MLCommonsSettings {
 
     // Feature flag for enabling telemetry static metric collection job -- MLStatsJobProcessor
     public static final Setting<Boolean> ML_COMMONS_STATIC_METRIC_COLLECTION_ENABLED = Setting
-        .boolSetting("plugins.ml_commons.metrics_static_collection_enabled", false, Setting.Property.NodeScope, Setting.Property.Final);
+        .boolSetting("plugins.ml_commons.metrics_static_collection_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
+
+    // Feature flag for Agentic memory APIs
+    public static final Setting<Boolean> ML_COMMONS_AGENTIC_MEMORY_ENABLED = Setting
+        .boolSetting("plugins.ml_commons.agentic_memory_enabled", false, Setting.Property.NodeScope, Setting.Property.Dynamic);
+    public static final String ML_COMMONS_AGENTIC_MEMORY_DISABLED_MESSAGE =
+        "The Agentic Memory APIs are not enabled. To enable, please update the setting " + ML_COMMONS_AGENTIC_MEMORY_ENABLED.getKey();
+
+    public static final Setting<String> REMOTE_METADATA_GLOBAL_TENANT_ID = Setting
+        .simpleString("plugins.ml-commons." + REMOTE_METADATA_GLOBAL_TENANT_ID_KEY, Setting.Property.NodeScope, Setting.Property.Final);
+
+    public static final Setting<String> REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL = Setting
+        .simpleString(
+            "plugins.ml-commons." + REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY,
+            Setting.Property.NodeScope,
+            Setting.Property.Final
+        );
 }
