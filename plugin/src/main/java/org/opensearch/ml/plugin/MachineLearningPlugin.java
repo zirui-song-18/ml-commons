@@ -21,11 +21,13 @@ import static org.opensearch.ml.common.CommonValue.ML_TASK_INDEX;
 import static org.opensearch.ml.common.CommonValue.TENANT_ID_FIELD;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.ML_COMMONS_MULTI_TENANCY_ENABLED;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_ENDPOINT;
+import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_REGION;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_SERVICE_NAME;
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_TYPE;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_ENDPOINT_KEY;
+import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_TENANT_ID_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_REGION_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_SERVICE_NAME_KEY;
@@ -621,7 +623,12 @@ public class MachineLearningPlugin extends Plugin
                             Map.entry(REMOTE_METADATA_SERVICE_NAME_KEY, REMOTE_METADATA_SERVICE_NAME.get(settings)),
                             Map.entry(TENANT_AWARE_KEY, "true"),
                             Map.entry(TENANT_ID_FIELD_KEY, TENANT_ID_FIELD),
-                            Map.entry(REMOTE_METADATA_GLOBAL_TENANT_ID_KEY, REMOTE_METADATA_GLOBAL_TENANT_ID.get(settings))
+                            Map.entry(REMOTE_METADATA_GLOBAL_TENANT_ID_KEY, REMOTE_METADATA_GLOBAL_TENANT_ID.get(settings)),
+                            Map
+                                .entry(
+                                    REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY,
+                                    REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL.get(settings)
+                                )
                         )
                     : Collections.emptyMap(),
                 // For node client / local cluster it won't use this thread pool
@@ -1234,7 +1241,7 @@ public class MachineLearningPlugin extends Plugin
                 MLCommonsSettings.ML_COMMONS_EXECUTE_TOOL_ENABLED,
                 MLCommonsSettings.ML_COMMONS_AGENTIC_SEARCH_ENABLED,
                 MLCommonsSettings.ML_COMMONS_AGENTIC_MEMORY_ENABLED,
-                    MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID
+                MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID
             );
         return settings;
     }
