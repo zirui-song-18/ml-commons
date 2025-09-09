@@ -105,12 +105,12 @@ public class RemoteModel implements Predictable {
 
     @Override
     public void initModel(MLModel model, Map<String, Object> params, Encryptor encryptor) {
-        try {
-            SdkClient sdkClient = (SdkClient) params.get(SDK_CLIENT);
-            String globalTenantId = REMOTE_METADATA_GLOBAL_TENANT_ID.get((Settings) params.get(SETTINGS));
+        SdkClient sdkClient = (SdkClient) params.get(SDK_CLIENT);
+        sdkClient.isGlobalResource(MLIndex.MODEL.getIndexName(), model.getModelId()).thenAccept(isGlobalResource -> {
+            String decryptTenantId = isGlobalResource
+                ? REMOTE_METADATA_GLOBAL_TENANT_ID.get((Settings) params.get(SETTINGS))
+                : model.getTenantId();
             Connector connector = model.getConnector().cloneConnector();
-            boolean isGlobalResource = sdkClient.isGlobalResource(MLIndex.MODEL.getIndexName(), model.getModelId());
-            String decryptTenantId = isGlobalResource ? globalTenantId : model.getTenantId();
             connector.decrypt(PREDICT.name(), (credential, tenantId) -> encryptor.decrypt(credential, decryptTenantId), decryptTenantId);
             // This situation can only happen for inline connector where we don't provide tenant id.
             if (connector.getTenantId() == null && model.getTenantId() != null) {
@@ -125,13 +125,9 @@ public class RemoteModel implements Predictable {
             this.connectorExecutor.setUserRateLimiterMap((Map<String, TokenBucket>) params.get(USER_RATE_LIMITER_MAP));
             this.connectorExecutor.setMlGuard((MLGuard) params.get(GUARDRAILS));
             this.connectorExecutor.setConnectorPrivateIpEnabled((AtomicBoolean) params.get(CONNECTOR_PRIVATE_IP_ENABLED));
-        } catch (RuntimeException e) {
-            log.error("Failed to init remote model.", e);
-            throw e;
-        } catch (Throwable e) {
+        }).exceptionally(e -> {
             log.error("Failed to init remote model.", e);
             throw new MLException(e);
-        }
+        });
     }
-
 }
