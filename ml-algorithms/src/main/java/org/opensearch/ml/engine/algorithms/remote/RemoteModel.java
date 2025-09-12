@@ -9,6 +9,8 @@ import static org.opensearch.ml.common.connector.ConnectorAction.ActionType.PRED
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_GLOBAL_TENANT_ID;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.opensearch.cluster.service.ClusterService;
@@ -104,9 +106,9 @@ public class RemoteModel implements Predictable {
     }
 
     @Override
-    public void initModel(MLModel model, Map<String, Object> params, Encryptor encryptor) {
+    public CompletionStage<Boolean> initModelAsync(MLModel model, Map<String, Object> params, Encryptor encryptor) {
         SdkClient sdkClient = (SdkClient) params.get(SDK_CLIENT);
-        sdkClient.isGlobalResource(MLIndex.MODEL.getIndexName(), model.getModelId()).thenAccept(isGlobalResource -> {
+        return sdkClient.isGlobalResource(MLIndex.MODEL.getIndexName(), model.getModelId()).thenCompose(isGlobalResource -> {
             String decryptTenantId = Boolean.TRUE.equals(isGlobalResource)
                 ? REMOTE_METADATA_GLOBAL_TENANT_ID.get((Settings) params.get(SETTINGS))
                 : model.getTenantId();
@@ -125,6 +127,7 @@ public class RemoteModel implements Predictable {
             this.connectorExecutor.setUserRateLimiterMap((Map<String, TokenBucket>) params.get(USER_RATE_LIMITER_MAP));
             this.connectorExecutor.setMlGuard((MLGuard) params.get(GUARDRAILS));
             this.connectorExecutor.setConnectorPrivateIpEnabled((AtomicBoolean) params.get(CONNECTOR_PRIVATE_IP_ENABLED));
+            return CompletableFuture.completedStage(true);
         }).exceptionally(e -> {
             log.error("Failed to init remote model.", e);
             throw new MLException(e);
