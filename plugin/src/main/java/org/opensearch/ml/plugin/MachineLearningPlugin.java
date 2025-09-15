@@ -28,6 +28,7 @@ import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADAT
 import static org.opensearch.ml.common.settings.MLCommonsSettings.REMOTE_METADATA_TYPE;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_ENDPOINT_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_RESOURCE_CACHE_TTL_KEY;
+import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_GLOBAL_TENANT_ID_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_REGION_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_SERVICE_NAME_KEY;
 import static org.opensearch.remote.metadata.common.CommonValue.REMOTE_METADATA_TYPE_KEY;
